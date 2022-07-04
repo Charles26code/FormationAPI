@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title "Mon app React" %}
+
+{% block stylesheets %}
+	<link href="https://bootswatch.com/5/sketchy/bootstrap.min.css" rel="stylesheet">
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block body %}
+	<div id="app"></div>
+{% endblock %}
+
+{% block javascript %}
+	{{ encore_entry_script_tags('app') }}
+{% endblock %}

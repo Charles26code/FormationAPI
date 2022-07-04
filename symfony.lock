@@ -350,11 +350,11 @@
             "ref": "91f4d29f5ebbd2fcccc71ca55a17d14a17b308e8"
         },
         "files": [
-            "assets/app.js",
+            "assets/js/app.js",
             "assets/bootstrap.js",
             "assets/controllers.json",
             "assets/controllers/hello_controller.js",
-            "assets/styles/app.css",
+            "assets/js/styles/app.css",
             "config/packages/webpack_encore.yaml",
             "package.json",
             "webpack.config.js"
