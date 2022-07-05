@@ -1,35 +1,49 @@
 // imports importants
 // npx webpack --watch --progress == dev-server mais sans passer par le conteneur docker
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from './components/Navbar';
 import Homepage from './pages/Homepage';
 import CustomersPage from './pages/CustomersPage';
-import { HashRouter, Switch, Route } from "react-router-dom"
-
+import CustomersPagePaginated from './pages/CustomersPagePaginated';
+import { HashRouter, Switch, Route, withRouter, Redirect } from "react-router-dom";
+import InvoicesPage from './pages/InvoicesPage';
+import LoginPage from './pages/LoginPage';
+import authAPI from './services/authAPI';
+import AuthContext from './contexts/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
-import CustomersPagePaginated from './pages/CustomersPagePaginated';
-import InvoicesPage from './pages/InvoicesPage';
 
-// start the Stimulus application
-console.log("dfghjkl");
+authAPI.setup();
 
 
 const App = () => {
-    return (
-        <HashRouter>
-            <Navbar />
+    //demander a authAPI si on est connecté : true/false
+    const [isAuthenticated, setIsAuthenticated] = useState(authAPI.isAuthenticated());
 
-            <main className='container pt-5'>
-                <Switch>
-                    <Route path="/customers" component={CustomersPage} />
-                    <Route path="/invoices" component={InvoicesPage} />
-                    <Route path="/" component={Homepage} />
-                </Switch>
-            </main>
-        </HashRouter>
+    const NavbarWithRouter = withRouter(Navbar);
+
+    return (
+        <AuthContext.Provider value={{
+            isAuthenticated,
+            setIsAuthenticated
+        }}>
+            <HashRouter>
+                <NavbarWithRouter />
+
+                <main className='container pt-5'>
+                    <Switch>
+                        <Route path="/login" component={LoginPage} />
+                        <PrivateRoute path="/invoices" component={InvoicesPage} />
+                        <PrivateRoute path="/customers" component={CustomersPage} />
+                        <Route path="/" component={Homepage} />
+                    </Switch>
+                </main>
+            </HashRouter>
+        </AuthContext.Provider>
+
     );
 };
 
