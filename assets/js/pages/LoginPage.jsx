@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import Field from "../components/forms/Field";
 import AuthContext from "../contexts/AuthContext";
 import AuthAPI from "../services/authAPI";
 
@@ -42,31 +43,25 @@ const LoginPage = ({ history }) => {
             <h1>Connexion à l'application</h1>
 
             <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="username">Adresse email</label>
-                    <input
-                        value={credentials.username}
-                        onChange={handleChange}
-                        type="email"
-                        placeholder="Adresse email de connexion"
-                        name="username"
-                        id="username"
-                        className={"form-control" + (error && " is-invalid")}
-                    />
-                    {error && <p className="invalid-feedback">{error}</p>}
-                </div>
-                <div className="form-group">
+                <Field
+                    label="Adresse email"
+                    name="username"
+                    value={credentials.username}
+                    onChange={handleChange}
+                    placeholder="Adresse email de connexion"
+                    error={error}
+                />
 
-                    <input
-                        value={credentials.password}
-                        onChange={handleChange}
-                        type="password"
-                        placeholder="Mot de passe"
-                        name="password"
-                        id="password"
-                        className="form-control"
-                    />
-                </div>
+                <Field
+                    name="password"
+                    label="Mot de passe"
+                    value={credentials.password}
+                    onChange={handleChange}
+                    placeholder="Mot de passe"
+                    type="password"
+                    error=""
+                />
+
                 <div className="form-group">
                     <button type="submit" className="btn btn-success">
                         Je me connecte
