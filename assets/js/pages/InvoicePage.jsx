@@ -4,6 +4,8 @@ import Select from "../components/forms/Select";
 import { Link } from "react-router-dom";
 import CustomersAPI from "../services/customersAPI";
 import InvoicesAPI from "../services/invoicesAPI";
+import { toast } from "react-toastify";
+import FormContentLoader from "../components/loaders/FormContentLoader";
 
 const InvoicePage = ({ history, match }) => {
     const { id = "new" } = match.params;
@@ -31,7 +33,7 @@ const InvoicePage = ({ history, match }) => {
 
             if (!invoice.customer) setInvoice({ ...invoice, customer: data[0].id });
         } catch (error) {
-            // toast.error("Impossible de charger les clients");
+            toast.error("Impossible de charger les clients");
             history.replace("/invoices");
         }
     };
@@ -43,7 +45,7 @@ const InvoicePage = ({ history, match }) => {
             setInvoice({ amount, status, customer: customer.id });
             setLoading(false);
         } catch (error) {
-            // toast.error("Impossible de charger la facture demandée");
+            toast.error("Impossible de charger la facture demandée");
             history.replace("/invoices");
         }
     };
@@ -75,10 +77,10 @@ const InvoicePage = ({ history, match }) => {
         try {
             if (editing) {
                 await InvoicesAPI.update(id, invoice);
-                // toast.success("La facture a bien été modifiée");
+                toast.success("La facture a bien été modifiée");
             } else {
                 await InvoicesAPI.create(invoice);
-                // toast.success("La facture a bien été enregistrée");
+                toast.success("La facture a bien été enregistrée");
                 history.replace("/invoices");
             }
         } catch ({ response }) {
@@ -91,7 +93,7 @@ const InvoicePage = ({ history, match }) => {
                 });
 
                 setErrors(apiErrors);
-                // toast.error("Des erreurs dans votre formulaire");
+                toast.error("Des erreurs dans votre formulaire");
             }
         }
     };
@@ -101,6 +103,7 @@ const InvoicePage = ({ history, match }) => {
             {(editing && <h1>Modification d'une facture</h1>) || (
                 <h1>Création d'une facture</h1>
             )}
+            {loading && <FormContentLoader />}
             {!loading && (
                 <form onSubmit={handleSubmit}>
                     <Field
